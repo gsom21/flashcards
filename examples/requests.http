@@ -1,0 +1,36 @@
+GET http://localhost:{{port}}/user/me
+Accept: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+###
+POST http://localhost:{{port}}/flashcard/save
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "content": "tesfdgdggdt2",
+  "hint": "trdsdsd"
+}
+
+### GET all flashcards
+GET http://localhost:{{port}}/flashcard/all
+Authorization: Basic YWRtaW46YWRtaW4=
+
+###
+
+POST http://localhost:{{port}}/user/login
+Content-Type: application/json
+
+{
+  "u": "test",
+  "pd": "dsds"
+}
+
+###
+POST http://localhost:{{port}}/flashcard/import
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "text": "line1\nline2\nline3"
+}
