@@ -29,11 +29,12 @@ function submit() {
   <div class="container vh-100 d-flex justify-content-center" style="align-items: flex-start;">
     <div class="row w-100 justify-content-center" style="margin-top: 30vh;">
       <div class="col-md-6 login-form">
+        <div :class="[store.isNightModeOn ? '' : 'alert-primary']" class="alert">Auto registration is currently available</div>
         <label class="form-label" for="login">Login: </label>
         <input class="form-control" placeholder="Login" v-model="login" id="login"/><br />
         <label class="form-label" for="password">Password: </label>
         <input class="form-control" placeholder="Password" id="password" v-model="password" type="password"/><br />
-        <button @click="submit" class="btn btn-outline-primary">Sign In/Sign Up</button>
+        <button @click="submit" :class="[store.isNightModeOn ? 'btn-primary' : 'btn-outline-primary']" class="btn">Sign In/Sign Up</button>
       </div>
     </div>
   </div>
@@ -42,7 +43,7 @@ function submit() {
 
 <style scoped>
 .login-form {
-  background-color: white;
+  background-color: var(--card-bg);
   border-radius: 10px;
   padding: 30px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);

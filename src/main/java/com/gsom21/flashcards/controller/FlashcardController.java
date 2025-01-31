@@ -29,9 +29,9 @@ public class FlashcardController {
         if (!(userObject instanceof User user)) {
             throw new RuntimeException("User is not authenticated");
         }
-        
-         Sort sort = Sort.by(Sort.Order.desc("createdAt"));
-        
+
+        Sort sort = Sort.by(Sort.Order.desc("createdAt"));
+
         return repository.findByUserID(user.getId(), sort);
     }
 
@@ -106,6 +106,9 @@ public class FlashcardController {
             if (line.isEmpty()) {
                 continue;
             }
+            if (line.length() > 300) {
+                continue;
+            }
             Flashcard flashcard = new Flashcard(line);
             flashcard.setUserID(user.getId());
             flashcard.setCreatedAt(new Timestamp(System.currentTimeMillis()));
@@ -124,6 +127,20 @@ public class FlashcardController {
             throw new RuntimeException("User is not authenticated");
         }
 
+        String content = flashcard.getContent().trim();
+        if (content.isEmpty()) {
+            throw new StatusException(HttpStatus.BAD_REQUEST, "empty card");
+        }
+
+        if (content.length() > 300) {
+            throw new StatusException(HttpStatus.BAD_REQUEST, "card is too big");
+        }
+
+        String hint = flashcard.getHint().trim();
+        if (hint.length() > 300) {
+            throw new StatusException(HttpStatus.BAD_REQUEST, "hint is too big");
+        }
+
         if (flashcard.getId() != null && !flashcard.getId().isEmpty()) {
             Optional<Flashcard> flashcardOptional = repository.findById(flashcard.getId());
             if (flashcardOptional.isPresent()) {
@@ -131,8 +148,8 @@ public class FlashcardController {
                 if (!existingFlashcard.getUserID().equals(user.getId())) {
                     throw new StatusException(HttpStatus.BAD_REQUEST, "flashcard not found");
                 }
-                existingFlashcard.setContent(flashcard.getContent());
-                existingFlashcard.setHint(flashcard.getHint());
+                existingFlashcard.setContent(content);
+                existingFlashcard.setHint(hint);
                 existingFlashcard.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
                 repository.save(existingFlashcard);
 
@@ -142,11 +159,13 @@ public class FlashcardController {
                 flashcard.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             }
         } else {
-            List<Flashcard> flashcards = repository.findByContent(flashcard.getContent());
+            List<Flashcard> flashcards = repository.findByUserIDAndContent(user.getId(), content);
             if (!flashcards.isEmpty()) {
                 throw new StatusException(HttpStatus.BAD_REQUEST, "flashcard already exists");
             }
 
+            flashcard.setContent(content);
+            flashcard.setHint(hint);
             flashcard.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         }
 

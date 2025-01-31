@@ -91,7 +91,7 @@ onMounted(async () => {
     <div class="row g-4 py-3">
       <div class="col-md-5"></div>
       <div class="col-md-2">
-        <button @click="addFlashcard" class="btn btn-outline-primary" style="width: 100%">Add</button>
+        <button @click="addFlashcard" :class="[store.isNightModeOn ? 'btn-primary' : 'btn-outline-primary']" class="btn " style="width: 100%">Add</button>
       </div>
       <div class="col-md-5"></div>
     </div>

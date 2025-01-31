@@ -1,5 +1,5 @@
 # Используем базовый образ Ubuntu
-FROM ubuntu:latest
+FROM ubuntu:22.04
 
 # Устанавливаем переменные окружения для non-interactive режима
 ENV DEBIAN_FRONTEND=noninteractive

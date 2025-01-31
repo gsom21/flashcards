@@ -109,7 +109,7 @@ function isFiltered(cardText: string) {
       <div v-if="editWindowVisible" @click.stop="">
         <input type="text" v-model="card.content" class="form-control mb-1">
         <textarea type="text" v-model="card.hint" class="form-control"></textarea>
-        <button class="btn btn-outline-primary mt-2 mb-3" @click="updateCard">Update</button>
+        <button :class="[store.isNightModeOn ? 'btn-primary' : 'btn-outline-primary']" class="btn mt-2 mb-3" @click="updateCard">Update</button>
       </div>
     </div>
   </div>
@@ -119,7 +119,7 @@ function isFiltered(cardText: string) {
 .single-card {
   border-radius: 4px;
   background-color: var(--card-bg);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: var(--card-box-shadow);
   text-align: center;
   overflow-wrap: break-word;
   position: relative;
@@ -128,7 +128,8 @@ function isFiltered(cardText: string) {
 
 .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  min-width: 120px;
+  max-width: 300px;
   background-color: #555;
   color: #fff;
   text-align: center;
@@ -140,11 +141,11 @@ function isFiltered(cardText: string) {
   z-index: 1;
   bottom: 125%;
   left: 50%;
-  margin-left: -60px;
+  transform: translateX(-50%);
 
   /* Fade in tooltip */
   opacity: 0;
-  transition: opacity 0.7s;
+  transition: opacity 0.3s;
 }
 
 .tooltiptext::after {

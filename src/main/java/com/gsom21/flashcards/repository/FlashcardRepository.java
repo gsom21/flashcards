@@ -9,5 +9,5 @@ import java.util.List;
 public interface FlashcardRepository extends MongoRepository<Flashcard, String> {
     List<Flashcard> findByUserID(String userID);
     List<Flashcard> findByUserID(String userID, Sort sort);
-    List<Flashcard> findByContent(String content);
+    List<Flashcard> findByUserIDAndContent(String userID, String content);
 }
